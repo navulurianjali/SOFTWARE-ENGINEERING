@@ -1,10 +1,44 @@
 public class Solution {
-        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-                if (nums1.length > nums2.length) {
-                            return findMedianSortedArrays(nums2, nums1);
-                                    }
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // Ensure nums1 is the smaller array
+        if (nums1.length > nums2.length) {
+            return findMedianSortedArrays(nums2, nums1);
+        }
+        
+        int m = nums1.length;
+        int n = nums2.length;
+        int left = 0, right = m, halfLen = (m + n + 1) / 2;
+        double maxOfLeft, minOfRight;
 
-                                            int m = nums1.length;
-                                                    int n = nums2.length;
-                                                            int left = 0, right = m, halfLen = (m + n + 1) / 2;
-…                                                                                                                                                                                                                                                                                                                                                                                                                                                                         }
+        while (left <= right) {
+            int i = (left + right) / 2; // Partition nums1
+            int j = halfLen - i; // Partition nums2
+
+            // Adjust partitions
+            int maxLeft1 = (i == 0) ? Integer.MIN_VALUE : nums1[i - 1];
+            int minRight1 = (i == m) ? Integer.MAX_VALUE : nums1[i];
+
+            int maxLeft2 = (j == 0) ? Integer.MIN_VALUE : nums2[j - 1];
+            int minRight2 = (j == n) ? Integer.MAX_VALUE : nums2[j];
+
+            if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
+                // We have partitioned the arrays correctly
+                if ((m + n) % 2 == 0) {
+                    maxOfLeft = Math.max(maxLeft1, maxLeft2);
+                    minOfRight = Math.min(minRight1, minRight2);
+                    return (maxOfLeft + minOfRight) / 2.0;
+                } else {
+                    return Math.max(maxLeft1, maxLeft2);
+                }
+            } else if (maxLeft1 > minRight2) {
+                // We are too far on the right side for nums1. Go left.
+                right = i - 1;
+            } else {
+                // We are too far on the left side for nums1. Go right.
+                left = i + 1;
+            }
+        }
+
+        throw new IllegalArgumentException("Input arrays are not sorted.");
+    }
+}
