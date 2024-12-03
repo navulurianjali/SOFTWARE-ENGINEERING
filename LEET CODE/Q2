@@ -1,0 +1,10 @@
+public class Solution {
+        public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+                if (nums1.length > nums2.length) {
+                            return findMedianSortedArrays(nums2, nums1);
+                                    }
+
+                                            int m = nums1.length;
+                                                    int n = nums2.length;
+                                                            int left = 0, right = m, halfLen = (m + n + 1) / 2;
+…                                                                                                                                                                                                                                                                                                                                                                                                                                                                         }
